@@ -1,0 +1,11 @@
+{
+    "name": "iota-did-verifier",
+    "version": "1.0.0",
+    "license": "MIT",
+    "scripts": {
+      "start": "cd frontend && pnpm run dev",
+      "public_start": "cd frontend && pnpm run public_dev",
+      "server": "cd backend && pnpm run start",
+      "install-packages": "cd frontend && pnpm install && cd .. && cd backend && pnpm install"
+    }
+}
