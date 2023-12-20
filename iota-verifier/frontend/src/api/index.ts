@@ -8,7 +8,7 @@ type VerifyResponse = {
 }
 
 const Verify = async (presentation : string, challenge: string) => {
-  const { data: { verified } } = await axios.get<VerifyResponse>(`${baseURL}/api/verify`, {
+  const { data: { verified } } = await axios.get<VerifyResponse>(`${baseURL}/verify`, {
     params: {
       presentationFile: presentation,
       challenge: challenge,
