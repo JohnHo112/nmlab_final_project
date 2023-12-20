@@ -1,310 +1,219 @@
-# IOTA Identity WASM
+![banner](https://github.com/iotaledger/identity.rs/raw/HEAD/.github/banner_identity.svg)
 
-> This is the 1.0 version of the official WASM bindings for [IOTA Identity](https://github.com/iotaledger/identity.rs).
+<p align="center">
+  <a href="https://iota.stackexchange.com/" style="text-decoration:none;"><img src="https://img.shields.io/badge/StackExchange-9cf.svg?logo=stackexchange" alt="StackExchange"></a>
+  <a href="https://discord.iota.org/" style="text-decoration:none;"><img src="https://img.shields.io/badge/Discord-9cf.svg?logo=discord" alt="Discord"></a>
+  <a href="https://discord.iota.org/" style="text-decoration:none;"><img src="https://img.shields.io/discord/397872799483428865" alt="Discord"></a>
+  <a href="https://github.com/iotaledger/identity.rs/blob/HEAD/LICENSE" style="text-decoration:none;"><img src="https://img.shields.io/github/license/iotaledger/identity.rs.svg" alt="Apache 2.0 license"></a>
+  <img src="https://deps.rs/repo/github/iotaledger/identity.rs/status.svg" alt="Dependencies">
+  <a href='https://coveralls.io/github/iotaledger/identity.rs?branch=main'><img src='https://coveralls.io/repos/github/iotaledger/identity.rs/badge.svg?branch=main' alt='Coverage Status' /></a>
 
-## [API Reference](https://wiki.iota.org/identity.rs/libraries/wasm/api_reference)
+</p>
 
-## [Examples](https://github.com/iotaledger/identity.rs/blob/main/bindings/wasm/examples/README.md)
+<p align="center">
+  <a href="#introduction">Introduction</a> ◈
+  <a href="#bindings">Bindings</a> ◈
+  <a href="#documentation-and-resources">Documentation & Resources</a> ◈
+  <a href="#getting-started">Getting Started</a> ◈
+  <a href="#example-creating-an-identity">Example</a> ◈
+  <a href="#roadmap-and-milestones">Roadmap</a> ◈
+  <a href="#contributing">Contributing</a>
+</p>
 
-## Install the library:
+---
 
-Latest Release: this version matches the `main` branch of this repository.
+## Introduction
 
-```bash
-npm install @iota/identity-wasm
+IOTA Identity is a [Rust](https://www.rust-lang.org/) implementation of decentralized digital identity, also known as Self-Sovereign Identity (SSI). It implements the W3C [Decentralized Identifiers (DID)](https://www.w3.org/TR/did-core/) and [Verifiable Credentials](https://www.w3.org/TR/vc-data-model/) specifications. This library can be used to create, resolve and authenticate digital identities and to create verifiable credentials and presentations in order to share information in a verifiable manner and establish trust in the digital world. It does so while supporting secure storage of cryptographic keys, which can be implemented for your preferred key management system. Many of the individual libraries (Rust crates) are agnostic over the concrete DID method, with the exception of some libraries dedicated to implement the [IOTA DID method](https://wiki.iota.org/shimmer/identity.rs/specs/did/iota_did_method_spec/), which is an implementation of decentralized digital identity on the IOTA and Shimmer networks. Written in stable Rust, IOTA Identity has strong guarantees of memory safety and process integrity while maintaining exceptional performance.
+
+## Bindings
+
+[Foreign Function Interface (FFI)](https://en.wikipedia.org/wiki/Foreign_function_interface) Bindings of this [Rust](https://www.rust-lang.org/) library to other programming languages:
+
+- [Web Assembly](https://github.com/iotaledger/identity.rs/blob/HEAD/bindings/wasm/) (JavaScript/TypeScript)
+
+## Documentation and Resources
+
+- API References:
+  - [Rust API Reference](https://docs.rs/identity_iota/latest/identity_iota/): Package documentation (cargo docs).
+  - [Wasm API Reference](https://wiki.iota.org/shimmer/identity.rs/libraries/wasm/api_reference/): Wasm Package documentation.
+- [Identity Documentation Pages](https://wiki.iota.org/shimmer/identity.rs/introduction): Supplementing documentation with context around identity and simple examples on library usage.
+- [Examples](https://github.com/iotaledger/identity.rs/blob/HEAD/examples): Practical code snippets to get you started with the library.
+
+## Prerequisites
+
+- [Rust](https://www.rust-lang.org/) (>= 1.65)
+- [Cargo](https://doc.rust-lang.org/cargo/) (>= 1.65)
+
+## Getting Started
+
+If you want to include IOTA Identity in your project, simply add it as a dependency in your `Cargo.toml`:
+
+```toml
+[dependencies]
+identity_iota = { version = "1.0.0" }
 ```
 
-## Build
+To try out the [examples](https://github.com/iotaledger/identity.rs/blob/HEAD/examples), you can also do this:
 
-Alternatively, you can build the bindings yourself if you have Rust installed. If not, refer to [rustup.rs](https://rustup.rs) for the installation.
+1. Clone the repository, e.g. through `git clone https://github.com/iotaledger/identity.rs`
+2. Start a private Tangle as described in the [next section](#example-creating-an-identity)
+3. Run the example to create a DID using `cargo run --release --example 0_create_did`
 
-Install [`wasm-bindgen-cli`](https://github.com/rustwasm/wasm-bindgen). A manual installation is required because we use the [Weak References](https://rustwasm.github.io/wasm-bindgen/reference/weak-references.html) feature, which [`wasm-pack` does not expose](https://github.com/rustwasm/wasm-pack/issues/930).
+## Example: Creating an Identity
 
-```bash
-cargo install --force wasm-bindgen-cli
-```
-
-Then, install the necessary dependencies using:
-
-```bash
-npm install
-```
-
-and build the bindings for `node.js` with
-
-```bash
-npm run build:nodejs
-```
-
-or for the `web` with
-
-```bash
-npm run build:web
-```
-
-## Minimum Requirements
-
-The minimum supported version for node is: `v16`
-
-## NodeJS Usage
-
-The following code creates a new IOTA DID Document suitable for publishing to a locally running private network.
+The following code creates and publishes a new IOTA DID Document to a locally running private network.
 See the [instructions](https://github.com/iotaledger/hornet/tree/develop/private_tangle) on running your own private network.
 
-<!--
-Test this example using https://github.com/anko/txm: `txm README.md`
+_Cargo.toml_
 
-Replace imports with local paths for txm:
-!test program
-cat | sed -e "s#require('@iota/identity-wasm/node')#require('./node')#" | timeout 30 node || (echo "Process timed out after 30 seconds" && exit 1)
--->
-<!-- !test check Nodejs Example -->
+```toml
+[package]
+name = "iota_identity_example"
+version = "1.0.0"
+edition = "2021"
 
-```typescript
-const {
-  Jwk,
-  JwkType,
-  EdCurve,
-  MethodScope,
-  IotaDocument,
-  VerificationMethod,
-  Service,
-  MethodRelationship,
-  IotaIdentityClient,
-} = require('@iota/identity-wasm/node');
-const { Client } = require('@iota/sdk-wasm/node');
+[dependencies]
+identity_iota = {version = "1.0.0", features = ["memstore"]}
+iota-sdk = { version = "1.0.2", default-features = true, features = ["tls", "client", "stronghold"] }
+tokio = { version = "1", features = ["full"] }
+```
 
-const EXAMPLE_JWK = new Jwk({
-  kty: JwkType.Okp,
-  crv: EdCurve.Ed25519,
-  x: "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
-});
+_main._<span></span>_rs_
+
+```rust,no_run
+use identity_iota::core::ToJson;
+use identity_iota::iota::IotaClientExt;
+use identity_iota::iota::IotaDocument;
+use identity_iota::iota::IotaIdentityClientExt;
+use identity_iota::iota::NetworkName;
+use identity_iota::storage::JwkDocumentExt;
+use identity_iota::storage::JwkMemStore;
+use identity_iota::storage::KeyIdMemstore;
+use identity_iota::storage::Storage;
+use identity_iota::verification::jws::JwsAlgorithm;
+use identity_iota::verification::MethodScope;
+use iota_sdk::client::api::GetAddressesOptions;
+use iota_sdk::client::secret::stronghold::StrongholdSecretManager;
+use iota_sdk::client::secret::SecretManager;
+use iota_sdk::client::Client;
+use iota_sdk::crypto::keys::bip39;
+use iota_sdk::types::block::address::Bech32Address;
+use iota_sdk::types::block::output::AliasOutput;
+use iota_sdk::types::block::output::dto::AliasOutputDto;
+use tokio::io::AsyncReadExt;
 
 // The endpoint of the IOTA node to use.
-const API_ENDPOINT = "http://127.0.0.1:14265";
+static API_ENDPOINT: &str = "http://127.0.0.1:14265";
 
-/** Demonstrate how to create a DID Document. */
-async function main() {
-  // Create a new client with the given network endpoint.
-  const client = new Client({
-    primaryNode: API_ENDPOINT,
-    localPow: true,
-  });
+/// Demonstrates how to create a DID Document and publish it in a new Alias Output.
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+  // Create a new client to interact with the IOTA ledger.
+  let client: Client = Client::builder()
+    .with_primary_node(API_ENDPOINT, None)?
+    .finish()
+    .await?;
 
-  const didClient = new IotaIdentityClient(client);
+  // Create a new Stronghold.
+  let stronghold = StrongholdSecretManager::builder()
+    .password("secure_password".to_owned())
+    .build("./example-strong.hodl")?;
+
+  // Generate a mnemonic and store it in the Stronghold.
+  let random: [u8; 32] = rand::random();
+  let mnemonic =
+    bip39::wordlist::encode(random.as_ref(), &bip39::wordlist::ENGLISH).map_err(|err| anyhow::anyhow!("{err:?}"))?;
+  stronghold.store_mnemonic(mnemonic).await?;
+
+  // Create a new secret manager backed by the Stronghold.
+  let secret_manager: SecretManager = SecretManager::Stronghold(stronghold);
 
   // Get the Bech32 human-readable part (HRP) of the network.
-  const networkHrp = await didClient.getNetworkHrp();
+  let network_name: NetworkName = client.network_name().await?;
+
+  // Get an address from the secret manager.
+  let address: Bech32Address = secret_manager
+  .generate_ed25519_addresses(
+    GetAddressesOptions::default()
+      .with_range(0..1)
+      .with_bech32_hrp((&network_name).try_into()?),
+  )
+  .await?[0];
+
+  println!("Your wallet address is: {}", address);
+  println!("Please request funds from http://127.0.0.1:8091/, wait for a couple of seconds and then press Enter.");
+  tokio::io::stdin().read_u8().await?;
 
   // Create a new DID document with a placeholder DID.
   // The DID will be derived from the Alias Id of the Alias Output after publishing.
-  const document = new IotaDocument(networkHrp);
+  let mut document: IotaDocument = IotaDocument::new(&network_name);
 
   // Insert a new Ed25519 verification method in the DID document.
-  const method = VerificationMethod.newFromJwk(
-    document.id(),
-    EXAMPLE_JWK,
-    "#key-1"
-  );
-  document.insertMethod(method, MethodScope.VerificationMethod());
+  let storage: Storage<JwkMemStore, KeyIdMemstore> = Storage::new(JwkMemStore::new(), KeyIdMemstore::new());
+  document
+    .generate_method(
+      &storage,
+      JwkMemStore::ED25519_KEY_TYPE,
+      JwsAlgorithm::EdDSA,
+      None,
+      MethodScope::VerificationMethod,
+    )
+    .await?;
 
-  // Attach a new method relationship to the existing method.
-  document.attachMethodRelationship(
-    document.id().join("#key-1"),
-    MethodRelationship.Authentication
-  );
+  // Construct an Alias Output containing the DID document, with the wallet address
+  // set as both the state controller and governor.
+  let alias_output: AliasOutput = client.new_did_output(address.into(), document, None).await?;
+  println!("Alias Output: {}", AliasOutputDto::from(&alias_output).to_json_pretty()?);
 
-  // Add a new Service.
-  const service = new Service({
-    id: document.id().join("#linked-domain"),
-    type: "LinkedDomains",
-    serviceEndpoint: "https://iota.org/",
-  });
-  document.insertService(service);
+  // Publish the Alias Output and get the published DID document.
+  let document: IotaDocument = client.publish_did_output(&secret_manager, alias_output).await?;
+  println!("Published DID document: {:#}", document);
 
-  console.log(`Created document `, JSON.stringify(document.toJSON(), null, 2));
+  Ok(())
 }
-
-main();
 ```
 
-which prints
+_Example output_
 
-```
-Created document  {
-  "id": "did:iota:tst:0x0000000000000000000000000000000000000000000000000000000000000000",
-  "verificationMethod": [
-    {
-      "id": "did:iota:tst:0x0000000000000000000000000000000000000000000000000000000000000000#key-1",
-      "controller": "did:iota:tst:0x0000000000000000000000000000000000000000000000000000000000000000",
-      "type": "JsonWebKey",
-      "publicKeyJwk": {
-        "kty": "OKP",
-        "crv": "Ed25519",
-        "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo"
+```json
+{
+  "doc": {
+    "id": "did:iota:tst:0xa947df036e78c2eada8b16e019d517c9e38d4b19cb0c1fa066e752c3074b715d",
+    "verificationMethod": [
+      {
+        "id": "did:iota:tst:0xa947df036e78c2eada8b16e019d517c9e38d4b19cb0c1fa066e752c3074b715d#9KdQCWcvR8kmGPLFOYnTzypsDWsoUIvR",
+        "controller": "did:iota:tst:0xa947df036e78c2eada8b16e019d517c9e38d4b19cb0c1fa066e752c3074b715d",
+        "type": "JsonWebKey",
+        "publicKeyJwk": {
+          "kty": "OKP",
+          "alg": "EdDSA",
+          "kid": "9KdQCWcvR8kmGPLFOYnTzypsDWsoUIvR",
+          "crv": "Ed25519",
+          "x": "JJoYoeFWU7jWvdQmOKDvM4nZJ2cUbP9yhWZzFgd044I"
+        }
       }
-    }
-  ],
-  "authentication": [
-    "did:iota:tst:0x0000000000000000000000000000000000000000000000000000000000000000#key-1"
-  ],
-  "service": [
-    {
-      "id": "did:iota:tst:0x0000000000000000000000000000000000000000000000000000000000000000#linked-domain",
-      "type": "LinkedDomains",
-      "serviceEndpoint": "https://iota.org/"
-    }
-  ]
+    ]
+  },
+  "meta": {
+    "created": "2023-08-29T14:47:26Z",
+    "updated": "2023-08-29T14:47:26Z",
+    "governorAddress": "tst1qqd7kyu8xadzx9vutznu72336npqpj92jtp27uyu2tj2sa5hx6n3k0vrzwv",
+    "stateControllerAddress": "tst1qqd7kyu8xadzx9vutznu72336npqpj92jtp27uyu2tj2sa5hx6n3k0vrzwv"
+  }
 }
 ```
 
-**NOTE: see the [examples](https://github.com/iotaledger/identity.rs/blob/main/bindings/wasm/examples/README.md) for how to publish an IOTA DID Document.**
+## Roadmap and Milestones
 
-## Web Setup
+For detailed development progress, see the IOTA Identity development [kanban board](https://github.com/orgs/iotaledger/projects/8/views/5).
 
-The library loads the WASM file with an HTTP GET request, so the .wasm file must be copied to the root of the dist folder.
+## Contributing
 
-### Rollup
+We would love to have you help us with the development of IOTA Identity. Each and every contribution is greatly valued!
 
-- Install `rollup-plugin-copy`:
+Please review the [contribution](https://wiki.iota.org/shimmer/identity.rs/contribute) and [workflow](https://wiki.iota.org/shimmer/identity.rs/workflow) sections in the [IOTA Wiki](https://wiki.iota.org/).
 
-```bash
-$ npm install rollup-plugin-copy --save-dev
-```
+To contribute directly to the repository, simply fork the project, push your changes to your fork and create a pull request to get them included!
 
-- Add the copy plugin usage to the `plugins` array under `rollup.config.js`:
-
-```js
-// Include the copy plugin
-import copy from "rollup-plugin-copy";
-
-// Add the copy plugin to the `plugins` array of your rollup config:
-copy({
-  targets: [
-    {
-      src: "node_modules/@iota/sdk-wasm/web/wasm/iota_sdk_wasm_bg.wasm",
-      dest: "public",
-      rename: "iota_sdk_wasm_bg.wasm",
-    },
-    {
-      src: "node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm",
-      dest: "public",
-      rename: "identity_wasm_bg.wasm",
-    },
-  ],
-});
-```
-
-### Webpack
-
-- Install `copy-webpack-plugin`:
-
-```bash
-$ npm install copy-webpack-plugin --save-dev
-```
-
-```js
-// Include the copy plugin
-const CopyWebPlugin= require('copy-webpack-plugin');
-
-// Add the copy plugin to the `plugins` array of your webpack config:
-
-new CopyWebPlugin({
-  patterns: [
-    {
-      from: 'node_modules/@iota/sdk-wasm/web/wasm/iota_sdk_wasm_bg.wasm',
-      to: 'iota_sdk_wasm_bg.wasm'
-    },
-    {
-      from: 'node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm',
-      to: 'identity_wasm_bg.wasm'
-    }
-  ]
-}),
-```
-
-### Web Usage
-
-```typescript
-import init, { Client } from "@iota/sdk-wasm/web";
-import * as identity from "@iota/identity-wasm/web";
-
-// The endpoint of the IOTA node to use.
-const API_ENDPOINT = "http://127.0.0.1:14265";
-
-const EXAMPLE_JWK = new identity.Jwk({
-  kty: identity.JwkType.Okp,
-  crv: identity.EdCurve.Ed25519,
-  x: "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
-});
-
-/** Demonstrate how to create a DID Document. */
-async function createDocument() {
-  // Create a new client with the given network endpoint.
-  const iotaClient = new Client({
-    primaryNode: API_ENDPOINT,
-    localPow: true,
-  });
-
-  const didClient = new identity.IotaIdentityClient(iotaClient);
-
-  // Get the Bech32 human-readable part (HRP) of the network.
-  const networkHrp = await didClient.getNetworkHrp();
-
-  // Create a new DID document with a placeholder DID.
-  // The DID will be derived from the Alias Id of the Alias Output after publishing.
-  const document = new identity.IotaDocument(networkHrp);
-
-  // Insert a new Ed25519 verification method in the DID document.
-  let method = identity.VerificationMethod.newFromJwk(
-    document.id(),
-    EXAMPLE_JWK,
-    "#key-1"
-  );
-  document.insertMethod(method, identity.MethodScope.VerificationMethod());
-
-  // Attach a new method relationship to the existing method.
-  document.attachMethodRelationship(
-    document.id().join("#key-1"),
-    identity.MethodRelationship.Authentication
-  );
-
-  // Add a new Service.
-  const service = new identity.Service({
-    id: document.id().join("#linked-domain"),
-    type: "LinkedDomains",
-    serviceEndpoint: "https://iota.org/",
-  });
-  document.insertService(service);
-
-  console.log(`Created document `, JSON.stringify(document.toJSON(), null, 2));
-}
-
-init()
-  .then(() => identity.init())
-  .then(() => {
-    await createDocument();
-  });
-
-// or
-
-(async () => {
-  await init();
-  await identity.init();
-
-  await createDocument();
-})();
-
-// Default path is "identity_wasm_bg.wasm", but you can override it like this
-await identity.init("./static/identity_wasm_bg.wasm");
-```
-
-Calling `identity.init().then(<callback>)` or `await identity.init()` is required to load the Wasm file from the server if not available, because of that it will only be slow for the first time.
-
-**NOTE: see the [examples](https://github.com/iotaledger/identity.rs/blob/main/bindings/wasm/examples/README.md) for how to publish an IOTA DID Document.**
-
-## Examples in the Wild
-
-You may find it useful to see how the WASM bindings are being used in existing applications:
-
-- [Zebra IOTA Edge SDK](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK) (mobile apps using Capacitor.js + Svelte)
+The best place to get involved in discussions about this library or to look for support at is the `#identity` channel on the [IOTA Discord](https://discord.iota.org). You can also ask questions on our [Stack Exchange](https://iota.stackexchange.com/).
