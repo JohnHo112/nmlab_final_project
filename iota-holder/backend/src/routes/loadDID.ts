@@ -1,10 +1,11 @@
-import { loadDID } from "../iota-function/loadDid";
+import { resolveIdentity } from "../iota_function/resolve_did";
 const loadDIDRoute = async (req: any, res: any) => {
-  const data = req.query;
-  const name = data.name;
-  const password = data.password;
-  const account = await loadDID(name, password);
-  console.log(account.document().id());
-  res.send(account.document());
+  // const data = req.query;
+  // const name = data.name;
+  // const password = data.password;
+  const did = req.body.did;
+  const account = await resolveIdentity(did);
+  console.log("Resolved DID document: ", account);
+  res.send(account);
 };
 export default loadDIDRoute;

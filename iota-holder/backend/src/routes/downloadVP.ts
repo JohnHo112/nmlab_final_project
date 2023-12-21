@@ -1,4 +1,4 @@
-import fs from 'fs'
+const fs = require('fs');
 const downloadVPRoute = async (req: any, res: any) => {
   const data = req.query
   console.log(data)

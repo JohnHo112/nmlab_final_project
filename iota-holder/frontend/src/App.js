@@ -15,7 +15,7 @@ function App() {
           DIGITAL IDENTITY MANAGER
         </h1>
       </div>
-      <div class="position-relative">.
+      <div className="position-relative">.
         <Nav   >
           <Nav.Item>
             <Nav.Link  eventKey="/createdid" href="/createdid"> Create DID</Nav.Link>

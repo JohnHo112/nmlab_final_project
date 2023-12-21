@@ -104,7 +104,7 @@ export default function AddVM(){
                         <Form.Label>Password</Form.Label>
                         <InputGroup className="mb-3">
                             <Form.Control type={passwordType} placeholder="password" id="input-bordered" value={password} onChange={handlePassword} /> 
-                            <div class="input-group-append" style={{marginTop:"10px"}}>
+                            <div className="input-group-append" style={{marginTop:"10px"}}>
                                 <button type="button" className="btn btn-outline-info btn-sm" onClick={togglePassword} style={{height: "38px"}}>
                                 { passwordType==="password"? <i className="bi bi-eye-slash"></i> :<i className="bi bi-eye"></i> }
                                 {toggleWord==="show" ? <img src={img_hide} alt="hide" width={'25px'}/>: <img src={img_view} width={"25px"} alt="show"/>}

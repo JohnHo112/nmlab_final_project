@@ -1,223 +1,310 @@
----
-keywords:
-- wasm
-- decentralized identifiers
-- did subject
-- Verifiable credentials
-- Verifiable Presentations
-- validate
-- degree
-- university
----
+# IOTA Identity WASM
 
-# Digitally Validate a Degree
+> This is the 1.0 version of the official WASM bindings for [IOTA Identity](https://github.com/iotaledger/identity.rs).
 
-In this tutorial, you will use the WASM binding of the IOTA Identity framework to digitally prove the existence and validity of a university degree. To follow along please clone this repository.
+## [API Reference](https://wiki.iota.org/identity.rs/libraries/wasm/api_reference)
 
+## [Examples](https://github.com/iotaledger/identity.rs/blob/main/bindings/wasm/examples/README.md)
 
-The `src/` directory contains scripts that can be run separately by providing command line arguments. Make sure that the npm dependencies - which include 
-the wasm bindings for the IOTA Identity Framework - are installed by running:
+## Install the library:
+
+Latest Release: this version matches the `main` branch of this repository.
+
+```bash
+npm install @iota/identity-wasm
+```
+
+## Build
+
+Alternatively, you can build the bindings yourself if you have Rust installed. If not, refer to [rustup.rs](https://rustup.rs) for the installation.
+
+Install [`wasm-bindgen-cli`](https://github.com/rustwasm/wasm-bindgen). A manual installation is required because we use the [Weak References](https://rustwasm.github.io/wasm-bindgen/reference/weak-references.html) feature, which [`wasm-pack` does not expose](https://github.com/rustwasm/wasm-pack/issues/930).
+
+```bash
+cargo install --force wasm-bindgen-cli
+```
+
+Then, install the necessary dependencies using:
 
 ```bash
 npm install
 ```
 
-## Degree Validation
-Alice recently graduated from the University of Oslo with a Bachelor of Computer Science. Now, she wants to apply for a remote job at the IOTA Foundation and needs to digitally prove the existence and validity of her degree. What she needs is an immutable and verifiable credential, approved by both the University of Oslo and herself, before presenting it to her potential employer.
-
-
-## Roles
-
-As described in the [Digital Identities Solution](https://www.iota.org/solutions/digital-identity), IOTA Identity builds on the [W3C's proposed standards for a digital identity framework](https://www.w3.org/TR/did-core/) based on three roles:
-
-- **Holder**: Alice
-- **Issuer**: University of Oslo
-- **Verifier**: IOTA Foundation
-
-## Terms
-
-|Term   | Definition    |
-|:---   |:---           |
-| [Decentralized Identifier (DID)](https://www.w3.org/TR/did-core/#dfn-decentralized-identifiers) |A globally unique persistent identifier that does not require a centralized registration authority and is often generated and/or registered cryptographically.|
-| [DID Subject](https://www.w3.org/TR/did-core/#dfn-did-subjects)          |The entity identified by a DID and described by a DID document. Anything can be a DID subject: person, group, organization, physical thing, digital thing, logical thing, etc.  |
-| [DID Document](https://www.w3.org/TR/did-core/#dfn-did-documents)          |A set of data describing the DID subject, including mechanisms, such as cryptographic public keys, that the DID subject or a DID delegate can use to authenticate itself and prove its association with the DID  |
-| [Verification Method](https://www.w3.org/TR/did-core/#dfn-verification-method)   |A set of parameters that can be used together with a process to independently verify a proof. For example, a cryptographic public key can be used as a verification method for a digital signature; in such usage, it verifies that the signer possessed the associated cryptographic private key. |
-| [Verifiable Credential](https://www.w3.org/TR/did-core/#dfn-verifiable-credentials) | A standard data model and representation format for cryptographically-verifiable digital credentials. It is signed by the issuer, to prove control over the Verifiable Credential with a nonce or timestamp. |
-| Verifiable Presentation | A Verifiable Presentation is the format in which a (collection of) Verifiable Credential(s) gets shared. It is signed by the subject, to prove control over the Verifiable Credential with a nonce or timestamp. |
-| [DID Resolution](https://www.w3.org/TR/did-core/#dfn-did-resolution)  | The process that takes as its input a DID and a set of resolution options and returns a DID document in a conforming representation plus additional metadata.  |
-
-## Sequence-Chart
-
-![banner](/sequence-diagram.png)
-
-## Storage
-
-In this tutorial, [Stronghold](https://github.com/iotaledger/stronghold.rs) will be used to securely store private keys. The Identity Framework already has [Stronghold bindings for Node.js](https://github.com/iotaledger/identity.rs/tree/dev/bindings/stronghold-nodejs). We will be using them in this tutorial.
-For simplicity, each stronghold file will be responsible for storing only one DID.
-
-## Steps
-
-In this process, you will complete the different steps from the perspective of one of the mentioned roles above:
-
-### 1. **Holder**: Create a DID
-
-The first thing you will need to do in this tutorial is to create a DID (Decentralized Identifier) Document for Alice.
-The script [createDid.ts](./src/createDid.ts) can be used to create DIDs using the command:
+and build the bindings for `node.js` with
 
 ```bash
-npm run start create-did <name> <stronghold-password>
+npm run build:nodejs
 ```
 
-For Alice, a DID can be created using:
+or for the `web` with
 
 ```bash
-npm run start create-did alice alice-password
-
+npm run build:web
 ```
 
-This will create a minimal DID document for alice, and publish it to the Tangle. A Stronghold file `alice.hodl` will be created under `/stronghold-files` which contains the Account's state and the private key of the main verification method of the DID.
-`alice-password` will be used as a password for the stronghold storage. Obviously this password must be more secure in production applications.
+## Minimum Requirements
 
-See [Creating a Decentralized Identity](https://wiki.iota.org/identity.rs/concepts/decentralized_identifiers/create) for more information about generating DIDs.
+The minimum supported version for node is: `v16`
 
-### 2. **Issuer**: Create a DID
+## NodeJS Usage
 
-Once you have created Alice's DID, you should do the same for the University of Oslo.
+The following code creates a new IOTA DID Document suitable for publishing to a locally running private network.
+See the [instructions](https://github.com/iotaledger/hornet/tree/develop/private_tangle) on running your own private network.
+
+<!--
+Test this example using https://github.com/anko/txm: `txm README.md`
+
+Replace imports with local paths for txm:
+!test program
+cat | sed -e "s#require('@iota/identity-wasm/node')#require('./node')#" | timeout 30 node || (echo "Process timed out after 30 seconds" && exit 1)
+-->
+<!-- !test check Nodejs Example -->
+
+```typescript
+const {
+  Jwk,
+  JwkType,
+  EdCurve,
+  MethodScope,
+  IotaDocument,
+  VerificationMethod,
+  Service,
+  MethodRelationship,
+  IotaIdentityClient,
+} = require('@iota/identity-wasm/node');
+const { Client } = require('@iota/sdk-wasm/node');
+
+const EXAMPLE_JWK = new Jwk({
+  kty: JwkType.Okp,
+  crv: EdCurve.Ed25519,
+  x: "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+});
+
+// The endpoint of the IOTA node to use.
+const API_ENDPOINT = "http://127.0.0.1:14265";
+
+/** Demonstrate how to create a DID Document. */
+async function main() {
+  // Create a new client with the given network endpoint.
+  const client = new Client({
+    primaryNode: API_ENDPOINT,
+    localPow: true,
+  });
+
+  const didClient = new IotaIdentityClient(client);
+
+  // Get the Bech32 human-readable part (HRP) of the network.
+  const networkHrp = await didClient.getNetworkHrp();
+
+  // Create a new DID document with a placeholder DID.
+  // The DID will be derived from the Alias Id of the Alias Output after publishing.
+  const document = new IotaDocument(networkHrp);
+
+  // Insert a new Ed25519 verification method in the DID document.
+  const method = VerificationMethod.newFromJwk(
+    document.id(),
+    EXAMPLE_JWK,
+    "#key-1"
+  );
+  document.insertMethod(method, MethodScope.VerificationMethod());
+
+  // Attach a new method relationship to the existing method.
+  document.attachMethodRelationship(
+    document.id().join("#key-1"),
+    MethodRelationship.Authentication
+  );
+
+  // Add a new Service.
+  const service = new Service({
+    id: document.id().join("#linked-domain"),
+    type: "LinkedDomains",
+    serviceEndpoint: "https://iota.org/",
+  });
+  document.insertService(service);
+
+  console.log(`Created document `, JSON.stringify(document.toJSON(), null, 2));
+}
+
+main();
+```
+
+which prints
+
+```
+Created document  {
+  "id": "did:iota:tst:0x0000000000000000000000000000000000000000000000000000000000000000",
+  "verificationMethod": [
+    {
+      "id": "did:iota:tst:0x0000000000000000000000000000000000000000000000000000000000000000#key-1",
+      "controller": "did:iota:tst:0x0000000000000000000000000000000000000000000000000000000000000000",
+      "type": "JsonWebKey",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo"
+      }
+    }
+  ],
+  "authentication": [
+    "did:iota:tst:0x0000000000000000000000000000000000000000000000000000000000000000#key-1"
+  ],
+  "service": [
+    {
+      "id": "did:iota:tst:0x0000000000000000000000000000000000000000000000000000000000000000#linked-domain",
+      "type": "LinkedDomains",
+      "serviceEndpoint": "https://iota.org/"
+    }
+  ]
+}
+```
+
+**NOTE: see the [examples](https://github.com/iotaledger/identity.rs/blob/main/bindings/wasm/examples/README.md) for how to publish an IOTA DID Document.**
+
+## Web Setup
+
+The library loads the WASM file with an HTTP GET request, so the .wasm file must be copied to the root of the dist folder.
+
+### Rollup
+
+- Install `rollup-plugin-copy`:
 
 ```bash
-npm run start create-did uni-of-oslo uni-password
+$ npm install rollup-plugin-copy --save-dev
 ```
 
-with that `uni-of-oslo.hodl` will be created under `/stronhold-files`.
+- Add the copy plugin usage to the `plugins` array under `rollup.config.js`:
 
-### 3. **Issuer**: Add a Verification Method
+```js
+// Include the copy plugin
+import copy from "rollup-plugin-copy";
 
-Since the university will need to issue a signed verifiable credential for Alice, a verification method should be added to the university's DID document.
-Read more about adding verification methods in [update DID Documents](https://wiki.iota.org/identity.rs/concepts/decentralized_identifiers/update).
+// Add the copy plugin to the `plugins` array of your rollup config:
+copy({
+  targets: [
+    {
+      src: "node_modules/@iota/sdk-wasm/web/wasm/iota_sdk_wasm_bg.wasm",
+      dest: "public",
+      rename: "iota_sdk_wasm_bg.wasm",
+    },
+    {
+      src: "node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm",
+      dest: "public",
+      rename: "identity_wasm_bg.wasm",
+    },
+  ],
+});
+```
 
-To add a Verification Method the following command can be used:
+### Webpack
+
+- Install `copy-webpack-plugin`:
 
 ```bash
-npm run start create-vm <identity-name> <stronghold-password> <verification-fragment>
+$ npm install copy-webpack-plugin --save-dev
 ```
 
-This command will invoke [verificationMethods.ts](./src/verificationMethods.ts).
+```js
+// Include the copy plugin
+const CopyWebPlugin= require('copy-webpack-plugin');
 
-Note that `identity-name` is used to identify the Stronghold file location in `/stronghold-files` while `verification-fragment` is used to identify the Verification Method inside the DID Document.
-To create a Verification Method for the issuer, use the following command:
+// Add the copy plugin to the `plugins` array of your webpack config:
 
-```bash
-npm run start create-vm uni-of-oslo uni-password key-1
+new CopyWebPlugin({
+  patterns: [
+    {
+      from: 'node_modules/@iota/sdk-wasm/web/wasm/iota_sdk_wasm_bg.wasm',
+      to: 'iota_sdk_wasm_bg.wasm'
+    },
+    {
+      from: 'node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm',
+      to: 'identity_wasm_bg.wasm'
+    }
+  ]
+}),
 ```
 
-### 4. **Holder**: Add a Verification Method
+### Web Usage
 
-Alice will need a verification method to sign verifiable presentations before sending them to third parties. Hence a verification method also needs to be added to her DID document.
+```typescript
+import init, { Client } from "@iota/sdk-wasm/web";
+import * as identity from "@iota/identity-wasm/web";
 
-Similar to the issuer, the following command can be run to add a verification method to Alice's DID Document.
+// The endpoint of the IOTA node to use.
+const API_ENDPOINT = "http://127.0.0.1:14265";
 
-```bash
-npm run start create-vm alice alice-password key-1
+const EXAMPLE_JWK = new identity.Jwk({
+  kty: identity.JwkType.Okp,
+  crv: identity.EdCurve.Ed25519,
+  x: "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+});
+
+/** Demonstrate how to create a DID Document. */
+async function createDocument() {
+  // Create a new client with the given network endpoint.
+  const iotaClient = new Client({
+    primaryNode: API_ENDPOINT,
+    localPow: true,
+  });
+
+  const didClient = new identity.IotaIdentityClient(iotaClient);
+
+  // Get the Bech32 human-readable part (HRP) of the network.
+  const networkHrp = await didClient.getNetworkHrp();
+
+  // Create a new DID document with a placeholder DID.
+  // The DID will be derived from the Alias Id of the Alias Output after publishing.
+  const document = new identity.IotaDocument(networkHrp);
+
+  // Insert a new Ed25519 verification method in the DID document.
+  let method = identity.VerificationMethod.newFromJwk(
+    document.id(),
+    EXAMPLE_JWK,
+    "#key-1"
+  );
+  document.insertMethod(method, identity.MethodScope.VerificationMethod());
+
+  // Attach a new method relationship to the existing method.
+  document.attachMethodRelationship(
+    document.id().join("#key-1"),
+    identity.MethodRelationship.Authentication
+  );
+
+  // Add a new Service.
+  const service = new identity.Service({
+    id: document.id().join("#linked-domain"),
+    type: "LinkedDomains",
+    serviceEndpoint: "https://iota.org/",
+  });
+  document.insertService(service);
+
+  console.log(`Created document `, JSON.stringify(document.toJSON(), null, 2));
+}
+
+init()
+  .then(() => identity.init())
+  .then(() => {
+    await createDocument();
+  });
+
+// or
+
+(async () => {
+  await init();
+  await identity.init();
+
+  await createDocument();
+})();
+
+// Default path is "identity_wasm_bg.wasm", but you can override it like this
+await identity.init("./static/identity_wasm_bg.wasm");
 ```
 
-### 5: **Issuer**: Create Revocation list
+Calling `identity.init().then(<callback>)` or `await identity.init()` is required to load the Wasm file from the server if not available, because of that it will only be slow for the first time.
 
-In order for the issuer to be able to revoke credentials in the future, a revocation list is needed. See [Verifiable Credential Revocation](https://wiki.iota.org/identity.rs/concepts/verifiable_credentials/revocation) for further details.
-The following command can be used to create a revocation list:
+**NOTE: see the [examples](https://github.com/iotaledger/identity.rs/blob/main/bindings/wasm/examples/README.md) for how to publish an IOTA DID Document.**
 
-```bash
-npm run start add-revocation-list <identity-name> <stronghold-password> <revocation-fragment>
-```
+## Examples in the Wild
 
-This will invoke [revocationBitmap.ts](./src/revocationBitmap.ts).
+You may find it useful to see how the WASM bindings are being used in existing applications:
 
-For the University of Oslo use:
-
-```bash
-npm run start add-revocation-list uni-of-oslo uni-password rev-1
-```
-
-Notice that `rev-1` is used to identity this revocation list inside the DID document.
-
-### 5 **Issuer**: Create Verifiable Credential
-
-University of Oslo can now issue a verifiable credential to Alice. The following command can be used to create a verifiable credential:
-
-```bash
-npm run start create-vc <issuer-name> <issuerPassword> <subjectName> <subjectDid> <verificationMethodFragment> <revocationBitmapFragment> <revocationIndex>
-```
-
-This will invoke [verifiableCredentials.ts](./src/verifiableCredentials.ts).
-
-To create a verifiable credential for Alice, run the following command:
-
-```bash
-npm run start create-vc uni-of-oslo uni-password alice <subjectDid> key-1 rev-1 5
-```
-
-Notice that `<subjectDid>` needs to be replaced with Alice's DID. The reason we didn't use Alice's Stronghold file, is that the issuer doesn't have access to it in a real world scenario.
-If you didn't note Alice's DID upon creating the DID, use `npm run start get-did alice alice-password` to log the DID saved in Alice's Stronghold file.
-
-This verifiable credential is given a revocation index of `5`, this will be used later when the verifiable credential will be revoked. \
-The command will execute the script in [verifiableCredentials.ts](./src/verifiableCredentials.ts) which creates a verifiable credential using values provided as arguments
-and hard-coded values to describe the issued degree. This credential will be tied to `rev-1` revocation list and then signed with `key-1` verification method.\
-Once the script execution finishes, the file `alice-credential.json` will be created in the `credentials/` directory. The file contains the credential in JSON format
-and is usually sent back to Alice to store and enable her to prove her degree.
-
-### 6 **Holder**: Create Verifiable Presentation
-
-After Alice received the verifiable credential from the university, she applies for a job at the IOTA Foundation. The foundation requests a verifiable presentation
-to be signed by alice that includes the challenge 'xyz123'.
-The script [verifiablePresentation.ts](./src/verifiablePresentation.ts) can be run with the command:
-
-```bash
-npm run start create-vp <holder-name> <holder-password> <credential-file> <verification-method-fragment> <challenge>
-```
-
-For Alice's case:
-
-```bash
-npm run start create-vp alice alice-password alice-credential.json key-1 xyz123
-```
-
-This will create a verifiable presentation of Alice's credential that includes the challenge and signed by Alice's `key-1` verification method.
-The resulted presentation is saved in `presentations/alice-presentation.json`.
-
-### 7 **Verifier**: Verification
-
-Now alice sends the signed verifiable presentation to the IOTA Foundation. The foundation now has to verify if everything is correct and the credential is valid.
-
-The script [checkVerifiablePresentation](./src/verifiablePresentation.ts) can be run with the command:
-
-```bash
-npm run start verify-vp <presentation-file> <challenge>
-```
-
-So the foundation can run:
-
-```bash
-npm run start verify-vp alice-presentation.json xyz123
-
-```
-
-Since everything was signed correctly, the verification should succeed.
-
-### 8 **Issuer**: Revocation
-
-Unfortunately the university found out, that Alice had cheated on her final exam. Therefore, the university wants to revoke the validity of Alice's credential.
-Since the revocation list `rev-1` with revocation index `5` were used upon creating the verifiable credential, revocation is now possible by updating the revocation list.
-
-[revocation.ts](./src/revocation.ts) can be run with the command:
-
-```bash
-npm run start revoke-vc <issuer-name> <issuer-password> <revocation-bitmap-fragment> <revocation-index>
-```
-
-To revoke Alice's Credential you can run:
-
-```bash
-npm run start revoke-vc uni-of-oslo uni-password rev-1 5
-```
-
-This will update the revocation list inside the issuer's DID Document and publish it to the tangle. Now if the IOTA Foundation tries to verify the credential again
-e.g. by running `npm run start verify-vp alice-presentation.json xyz123`, This will throw an error since the verification now fails.
+- [Zebra IOTA Edge SDK](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK) (mobile apps using Capacitor.js + Svelte)
