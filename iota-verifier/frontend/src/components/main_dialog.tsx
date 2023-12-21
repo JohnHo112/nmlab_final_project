@@ -1,11 +1,11 @@
 import * as React from "react";
 import { useState, useEffect, CSSProperties } from "react";
 import "../css/main_dialog.css";
-import background from "../assets/background.jpg";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import CloseIcon from "@mui/icons-material/Close";
+import background from "../assets/200.gif";
+// import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+// import CloseIcon from "@mui/icons-material/Close";
 import { Verify } from "../api";
-import IconButton from "@mui/material/IconButton";
+// import IconButton from "@mui/material/IconButton";
 import BarLoader from "react-spinners/BarLoader";
 
 const MainDialog = () => {
@@ -13,7 +13,7 @@ const MainDialog = () => {
   const [files, setFiles] = useState("");
   const [fileName, setFileName] = useState("");
   const [verified, setVerified] = useState("Not Verified");
-  const [tutorial, setTutorial] = useState(false);
+  // const [tutorial, setTutorial] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +46,7 @@ const MainDialog = () => {
 
   const generate_challenge = (length: number) => {
     const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-=+?^_!#$%&";
     const charactersLength = characters.length;
     let result = "";
 
@@ -94,70 +94,81 @@ const MainDialog = () => {
     return (
       <>
         <p className="dialog__text">
-          Challenge: {challenge ? challenge : "Click 'Generate Challenge'"}
+          Challenge:
+          <p className="dialog__out__text">
+            {challenge ? challenge : "No Challenge Generated"}
+          </p>
+          <button
+            className="dialog__button"
+            onClick={() => generate_challenge(20)}>
+            Generate Challenge
+          </button>
         </p>
         <p className="dialog__text">
-          File: {fileName ? fileName : "Click 'Upload Presentation File'"}
+          File:
+          <p className="dialog__out__text">
+            {fileName ? fileName : "No File Uploaded"}
+          </p>
+          <p className="dialog__out__text">
+            <label className="dialog__fileButton">
+              Upload Presentation File
+              <input type="file" accept=".json" onChange={handleChange} hidden />
+            </label>
+          </p>
         </p>
         <p className="dialog__text">
-          Status: {loading ? <Loader /> : verified}
+          Status:
+          <p className="dialog__out__text">
+            {loading ? <Loader /> : verified}
+          </p>
+          <button className="dialog__button" onClick={handleVerify}>
+            Verify
+          </button>
         </p>
 
-        <button
-          className="dialog__button"
-          onClick={() => generate_challenge(6)}>
-          Generate Challenge
-        </button>
-        <label className="dialog__fileButton">
-          Upload Presentation File
-          <input type="file" accept=".json" onChange={handleChange} hidden />
-        </label>
-        <button className="dialog__button" onClick={handleVerify}>
-          Verify
-        </button>
       </>
     );
   };
 
-  const TutorialPage = () => {
-    return (
-      <>
-        <p className="tutorial__title">
-          Step 1 : <br />{" "}
-        </p>
-        <p className="tutorial__text">
-          Click "Generate Challenge" to get a random challenge.
-          <br />
-          <br />
-          (Showed in "Challenge" field.)
-        </p>
-        <p className="tutorial__title">
-          Step 2 : <br />
-        </p>
-        <p className="tutorial__text">
-          Go to Holder, generate a presentation file with this challenge.
-        </p>
-        <p className="tutorial__title">
-          Step 3 : <br />
-        </p>
-        <p className="tutorial__text">
-          Upload the presentation file (Click "Upload Presentation File").
-          <br />
-          <br />
-          If upload successfully, you can see the file name in "File" field.
-        </p>
-        <p className="tutorial__title">
-          Step 4 : <br />
-        </p>
-        <p className="tutorial__text">
-          Click "Verify" to verify your identity.
-          <br />
-          <br />
-          The result would show up in "Status" field.
-        </p>
-      </>
-    );
-  };
+  // const TutorialPage = () => {
+  //   return (
+  //     <>
+  //       <p className="tutorial__title">
+  //         Step 1 : <br />{" "}
+  //       </p>
+  //       <p className="tutorial__text">
+  //         Click "Generate Challenge" to get a random challenge.
+  //         <br />
+  //         <br />
+  //         (Showed in "Challenge" field.)
+  //       </p>
+  //       <p className="tutorial__title">
+  //         Step 2 : <br />
+  //       </p>
+  //       <p className="tutorial__text">
+  //         Go to Holder, generate a presentation file with this challenge.
+  //       </p>
+  //       <p className="tutorial__title">
+  //         Step 3 : <br />
+  //       </p>
+  //       <p className="tutorial__text">
+  //         Upload the presentation file (Click "Upload Presentation File").
+  //         <br />
+  //         <br />
+  //         If upload successfully, you can see the file name in "File" field.
+  //       </p>
+  //       <p className="tutorial__title">
+  //         Step 4 : <br />
+  //       </p>
+  //       <p className="tutorial__text">
+  //         Click "Verify" to verify your identity.
+  //         <br />
+  //         <br />
+  //         The result would show up in "Status" field.
+  //       </p>
+  //     </>
+  //   );
+  // };
 
   useEffect(() => {
     setVerified("Not Verified");
@@ -172,31 +183,22 @@ const MainDialog = () => {
     <>
       <div className="page">
         <img
-          src={background}
-          alt="background image"
-          className="background__img"
-        />
-
+            src={background}
+            alt="background image"
+            className="background__img"
+          />
         <div className="dialog__form">
           <div className="grid-container">
             <div />
             <h1 className="dialog__title">
-              {tutorial ? "Tutorial" : "Verifier"}
+              Verifier
+              {/* {tutorial ? "Tutorial" : "Verifier"} */}
             </h1>
             <div className="dialog__iconbutton">
-              <IconButton
-                size="large"
-                title="Tutorial"
-                onClick={() => setTutorial(!tutorial)}>
-                {tutorial ? (
-                  <CloseIcon className="dialog__icon" />
-                ) : (
-                  <ErrorOutlineIcon className="dialog__icon" />
-                )}
-              </IconButton>
             </div>
           </div>
-          {tutorial ? <TutorialPage /> : <MainPage />}
+            <MainPage />
+          {/* {tutorial ? <TutorialPage /> : <MainPage />} */}
         </div>
       </div>
     </>

@@ -6,7 +6,7 @@
     "start": "cd frontend && pnpm run dev",
     "public_start": "cd frontend && pnpm run public_dev",
     "server": "cd wasm && npm run start",
-    "install-packages": "cd frontend && pnpm install && cd .. && cd backend && pnpm install",
+    "install-packages": "cd frontend && pnpm install && cd .. && cd wasm && npm install && pnpm install",
     "verifier": "cd iota-verifier && bash verifier.sh",
     "kill-verifier": "cd iota-verifier && bash kill_verifier.sh"
   },
