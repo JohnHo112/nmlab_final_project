@@ -26,7 +26,6 @@ export default function CreateDID(){
             setLoading(false);
         }else{
             console.log("creating DID...");
-
                 instance
                 .post("/createDID", {verificationMethod: verificationMethod})
                 .then((res) => {
