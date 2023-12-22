@@ -97,9 +97,15 @@ export async function createVP() {
         unsignedVc,
         new JwsSignatureOptions(),
     );
+    
+    console.log("credentialJwt: " + credentialJwt);
+    const a = credentialJwt.toString();
+    console.log("a: " + a);
+    const b = await new Jwt(a);
+    console.log("b: " + b);
 
     const res = new JwtCredentialValidator(new EdDSAJwsVerifier()).validate(
-        credentialJwt,
+        b,
         issuerDocument,
         new JwtCredentialValidationOptions(),
         FailFast.FirstError,
@@ -132,8 +138,10 @@ export async function createVP() {
     // Create a Verifiable Presentation from the Credential
     const unsignedVp = new Presentation({
         holder: aliceDocument.id(),
-        verifiableCredential: [credentialJwt],
+        verifiableCredential: [b],
     });
+
+    console.log("fragment: " + aliceFragment)
 
     // Create a JWT verifiable presentation using the holder's verification method
     // and include the requested challenge and expiry timestamp.

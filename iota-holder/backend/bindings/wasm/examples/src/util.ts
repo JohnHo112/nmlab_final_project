@@ -16,8 +16,8 @@ import {
     Utils,
 } from "@iota/sdk-wasm/node";
 
-export const API_ENDPOINT = "http://localhost:14265";
-export const FAUCET_ENDPOINT = "http://localhost:8091/api/enqueue";
+export const API_ENDPOINT = "http://140.112.18.202:14265/";
+export const FAUCET_ENDPOINT = "http://140.112.18.202:8091/api/enqueue";
 
 /** Creates a DID Document and publishes it in a new Alias Output.
 

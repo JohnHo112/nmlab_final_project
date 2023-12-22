@@ -28,7 +28,7 @@
     "test:unit:node": "ts-mocha -p tsconfig.node.json ./tests/*.ts --parallel --exit",
     "cypress": "cypress open",
     "fmt": "dprint fmt",
-    "start": "nodemon ./src/server.ts"
+    "start": "ts-node --project tsconfig.node.json -r tsconfig-paths/register ./code/server.ts"
   },
   "config": {
     "CYPRESS_VERIFY_TIMEOUT": 100000
@@ -60,8 +60,8 @@
     "big-integer": "^1.6.51",
     "concurrently": "^7.6.0",
     "copy-webpack-plugin": "^7.0.0",
-    "cypress": "^10.11.0",
-    "cypress-parallel": "^0.9.1",
+    "cypress": "^13.6.1",
+    "cypress-parallel": "^0.14.0",
     "dprint": "^0.33.0",
     "fs-extra": "^10.1.0",
     "jsdoc-to-markdown": "^7.1.1",
