@@ -27,7 +27,7 @@ function App() {
 
     console.log(data)
 
-    Axios.post("http://localhost:5000/create", data)
+    Axios.post("http://localhost:5001/create", data)
       .then((response) => {
         const blob = new Blob([JSON.stringify(response.data)], {
           type: "application/json",
@@ -41,11 +41,11 @@ function App() {
 
   const revocation = () => {
     console.log(revocationIdx);
-    Axios.post("http://localhost:5000/revocation", revocationIdx);
+    Axios.post("http://localhost:5001/revocation", revocationIdx);
   };
 
   const showRevocationList = () => {
-    Axios.get("http://localhost:5000/showRevocationList", revocationIdx).then(
+    Axios.get("http://localhost:5001/showRevocationList", revocationIdx).then(
       (response) => {
         console.log(response.data);
         setRevocationList(response.data);

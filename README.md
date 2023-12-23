@@ -37,3 +37,23 @@ npm run issuer-frontend
 ```
 npm run issuer-backend
 ```
+
+## Verifier
+```
+cd iota-verifier
+```
+
+### Install Modules
+```
+npm run install-verifier-frontend
+npm run install-verifier-backend
+```
+
+### Run frontend
+```
+npm run verifier-frontend
+```
+### Run backend
+```
+npm run verifier-backend
+```

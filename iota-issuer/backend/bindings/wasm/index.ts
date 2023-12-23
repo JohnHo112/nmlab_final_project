@@ -76,7 +76,7 @@ app.post("/revocation", async (req:any, res:any) => {
     console.log(RevocationList)
 });
 
-app.listen(5000, () => {
-    console.log("Yey, your server is running on port 5000");
+app.listen(5001, () => {
+    console.log("Yey, your server is running on port 5001");
 });
 
