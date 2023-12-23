@@ -3,14 +3,11 @@
 // import loadDIDRoute from "./resolveDID";
 // import revokeVCRoute from "./Revo";
 // import VCRoute from "./VC";
-// import VPRoute from "./VP";
-// import VMRoute from "./VM";
 // import DownloadFileRoute from "./DownloadFile";
 import uploadFileRoute from "./uploadFile";
-// import downloadVPRoute from "./downloadVP";
+import downloadVPRoute from "./downloadVP";
 // import checkUsrNameRoute from "./checkUsrName";
-// import removeFileRoute from "./removeFile";
-import getUserStorageRoute from "./getUserStorage";
+import removeFileRoute from "./removeFile";
 import { createDid } from "../iota_function/create_did";
 import { createVP } from "../iota_function/create_vp";
 
@@ -56,19 +53,17 @@ function main(app: any) {
     const credentialFile = data.credentialFile;
     const holderFragment = data.fragment;
     const challenge = data.challenge;
-    console.log("req: \n" + holderDid + "\n" + credentialFile + "\n" +holderFragment + "\n" +challenge);
+    // console.log("VP req: \n" + holderDid + "\n" + credentialFile + "\n" +holderFragment + "\n" +challenge);
 
     const message = await createVP(client, holderStorage, credentialFile, holderDocument, holderFragment, challenge);
-    console.log("message: ", message);
+    console.log(message);
     res.send(message);
   });
   // app.get("/api/downloadSH", wrap(DownloadFileRoute));
   app.post("/api/uploadFile", wrap(uploadFileRoute));
-  // app.get("/api/downloadVP", wrap(downloadVPRoute));
+  app.get("/api/downloadVP", wrap(downloadVPRoute));
   // app.post("/api/checkUsrName", wrap(checkUsrNameRoute));
-  // app.post("/api/VM", wrap(VMRoute));
-  // app.post("/api/removeFile", wrap(removeFileRoute));
-  app.get("/api/getStorage", wrap(getUserStorageRoute));
+  app.post("/api/removeFile", wrap(removeFileRoute));
 }
 
 export default main;

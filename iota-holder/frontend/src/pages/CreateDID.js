@@ -29,7 +29,7 @@ export default function CreateDID(){
                 instance
                 .post("/createDID", {verificationMethod: verificationMethod})
                 .then((res) => {
-                    const didId = res.data.did;
+                    const didId = res.data;
                     console.log("DID id: ", didId);
                     setIotaDID(didId);
                     setLoading(false);

@@ -6,9 +6,6 @@ import downloadFile from "../downloadFileAPI";
 import FileDownload from "js-file-download";
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
-import InputGroup from 'react-bootstrap/InputGroup';
-import img_hide from '../images/hide.png'
-import img_view from '../images/view.png'
 
 export default function Login() {
   const [userDID, setUserDID] = useState("");
@@ -66,8 +63,8 @@ export default function Login() {
             setLoading(false);
           })
           .then((res) => {
-            console.log(res);
-            setLoading(false);
+            console.log("111111111111\n", res);
+
             instance
               .get("/VP", {
                 params: {
@@ -78,27 +75,25 @@ export default function Login() {
                 },
               })
               .then((res) => {
-                console.log(res);})
-              //   downloadFile
-              //     .get("/downloadVP", { params: { name: username } })
-              //     .then((res) => {
-              //       console.log(res);
-              //       FileDownload(
-              //         res.data,
-              //         username.concat("-presentation.json")
-              //       );
-              //       setLoading(false);
-              //       instance.post("/removeFile");
-              //     })
-              //     .catch((err) => {
-              //       console.log(err);
-              //       setErrorMessage("Something wrong!");
-              //       setLoading(false);
-              //     });
-              // })
+                console.log(res);  // "VP was successfully created." if lucky.
+                downloadFile
+                  .get("/downloadVP", { params: {fragment: verificationMethod} })
+                  .then((res) => {
+                    FileDownload(
+                      res.data,
+                      verificationMethod.concat("-presentation.json")
+                    );
+                    setLoading(false);
+                    instance.post("/removeFile");
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    setErrorMessage("Something went wrong while downloading file!");
+                    setLoading(false);
+                  })})
               .catch((err) => {
                 console.log(err);
-                setErrorMessage("Something wrong here!");
+                setErrorMessage("Something went wrong!");
                 setLoading(false);
               });
           });

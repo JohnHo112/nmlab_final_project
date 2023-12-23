@@ -10,9 +10,7 @@ import {
 } from "react-router-dom";
 import CreateDID from './pages/CreateDID';
 import HomePage from './pages/homePage';
-import GetDID from './pages/GetDID'
 import GetVP from './pages/GetVP';
-import AddVM from './pages/AddVM';
 
 const router = createBrowserRouter([
   {
@@ -32,15 +30,8 @@ const router = createBrowserRouter([
         element: <CreateDID />,
       },
       {
-        path: "getdid",
-        element: <GetDID />,
-      },
-      {
         path: "getvp",
         element: <GetVP/>
-      },{
-        path: "addvm",
-        element: <AddVM />,
       }
     ],
   },
