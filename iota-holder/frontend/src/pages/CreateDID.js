@@ -3,13 +3,8 @@ import instance from "../api";
 import Card from 'react-bootstrap/Card';
 import { JsonView,  defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
-import downloadFile from "../downloadFileAPI";
-import FileDownload from "js-file-download";
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
-import InputGroup from 'react-bootstrap/InputGroup';
-import img_hide from '../images/hide.png'
-import img_view from '../images/view.png'
 
 
 export default function CreateDID(){
@@ -48,7 +43,7 @@ export default function CreateDID(){
     
     return(
         <div id="login">
-            <Card style={{ width: '15rem' }} className="DID_card">
+            <Card style={{ width: '20rem' }} className="DID_card">
                 <Container className='login_container'>
                 <Form>
                     <Form.Group className="mb-3" controlId="verification method">
@@ -68,20 +63,30 @@ export default function CreateDID(){
             <div id="errorMessage">
                 <p>{errorMessage}</p>
             </div>
-            <div id="DID">
+            <div id="DID-create">
                 <Card id="display-card">
                     {(iotaDID!=="" && iotaDID!=="Repeat") ?
                     <div>
-                        <p>Your DID document: </p>
-                        <JsonView id="json-word" data={iotaDID} shouldInitiallyExpand={(level) => true} style={defaultStyles} />
+                        <h1>Create Digital Identity</h1>
+                            <p >
+                            1. Please enter any fragment. Memorize the fragment you entered. You'll need it to get VP later.<br/><br/>
+                            2. Fragment should not be blank.<br/><br/>
+                            3. Click the "Create Your DID" button. It may take a little time to finish.<br/><br/>
+                            4. After finishing, you'll see your DID below. Please copy and save it for later use.<br/><br/>
+                            5. Click on the logo to go back to the home page.<br/><br/>
+                            </p>
+                        <p>Your DID : </p>
+                        <JsonView id="json-word" data={iotaDID} shouldInitiallyExpand={(level) => true} />
                     </div>
                     :
                     <div>
                         <h1>Create Digital Identity</h1>
                         <p >
-                        1. Fragment should not be blank.<br/><br/>
-                        2. If you want more than one verification methods, please go to "Add Verification Method".<br/><br/>
-                        3. It may take a little time to finish
+                        1. Please enter any fragment. Memorize the fragment you entered. You'll need it to get VP later.<br/><br/>
+                        2. Fragment should not be blank.<br/><br/>
+                        3. Click the "Create Your DID" button. It may take a little time to finish.<br/><br/>
+                        4. After finishing, you'll see your DID here. Please copy and save it for later use.<br/><br/>
+                        5. You can click on the logo to go back to the home page.<br/><br/>
                         </p>
                     </div>
                     }

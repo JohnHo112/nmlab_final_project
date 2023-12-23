@@ -8,35 +8,15 @@ import Nav from 'react-bootstrap/Nav'
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-      <div id='logo'>
-      <img src={iota_logo} width={204.43} height={80} alt="IOTA LOGO" />
-        <h1 >
-          DIGITAL IDENTITY MANAGER
-        </h1>
-      </div>
-      <div className="position-relative">.
-        <Nav   >
+        <Nav>
           <Nav.Item>
-            <Nav.Link  eventKey="/createdid" href="/createdid"> Create DID</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="/addvm" >Add Verification Method</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="/getdid" >Get DID</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="/getvp" >Get Verification Presentation</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="/homepage">Home</Nav.Link>
+            <Nav.Link href="/homepage">
+              <img src={iota_logo} width={204.43} height={80} alt="IOTA LOGO" />
+            </Nav.Link>
           </Nav.Item>
         </Nav>
-      </div>
-      </header>
     
-        <div id="detail">
+      <div id="detail">
         <Outlet />
       </div>
 
