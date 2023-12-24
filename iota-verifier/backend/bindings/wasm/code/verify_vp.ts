@@ -9,18 +9,15 @@ import {
     JwtCredentialValidator,
     JwtPresentationValidationOptions,
     JwtPresentationValidator,
-    Presentation,
     Resolver,
     SubjectHolderRelationship,
 } from "@iota/identity-wasm/node";
 
-import { Client, MnemonicSecretManager, Utils } from "@iota/sdk-wasm/node";
-import { API_ENDPOINT, createDid } from "./util";
+import { Client } from "@iota/sdk-wasm/node";
+import { API_ENDPOINT } from "./util";
 
 export async function verify(presentationFile: string, challenge: string) {
-    // ===========================================================================
-    // Step 4: Verifier sends the holder a challenge and requests a signed Verifiable Presentation.
-    // ===========================================================================
+    // Verifier sends the holder a challenge and requests a signed Verifiable Presentation.
     try {
         console.log("Verifying...")
         console.log("presentationFile: ", presentationFile)
