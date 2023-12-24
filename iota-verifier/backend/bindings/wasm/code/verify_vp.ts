@@ -9,15 +9,18 @@ import {
     JwtCredentialValidator,
     JwtPresentationValidationOptions,
     JwtPresentationValidator,
+    Presentation,
     Resolver,
     SubjectHolderRelationship,
 } from "@iota/identity-wasm/node";
 
-import { Client } from "@iota/sdk-wasm/node";
-import { API_ENDPOINT } from "./util";
+import { Client, MnemonicSecretManager, Utils } from "@iota/sdk-wasm/node";
+import { API_ENDPOINT, createDid } from "./util";
 
 export async function verify(presentationFile: string, challenge: string) {
-    // Verifier sends the holder a challenge and requests a signed Verifiable Presentation.
+    // ===========================================================================
+    // Step 4: Verifier sends the holder a challenge and requests a signed Verifiable Presentation.
+    // ===========================================================================
     try {
         console.log("Verifying...")
         console.log("presentationFile: ", presentationFile)
@@ -36,7 +39,7 @@ export async function verify(presentationFile: string, challenge: string) {
         const nonce = challenge;
     
         // ===========================================================================
-        // Verifier receives the Verifiable Presentation and verifies it.
+        // Step 7: Verifier receives the Verifiable Presentation and verifies it.
         // ===========================================================================
     
         // The verifier wants the following requirements to be satisfied:

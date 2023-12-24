@@ -8,6 +8,15 @@ import { Request, Response } from "express";
 app.use(cors());
 app.use(express.json());
 
+// app.get("verify", async (req:any, res:any) => {
+//     console.log("verify");
+//     console.log(req.body);
+//     const challenge = req.body.challenge
+//     const presentationFile = req.body.presentationFile
+//     const Verified = await verify_vp(presentationFile, challenge);
+//     res.send(Verified)
+//     console.log(Verified)
+// });
 export type getVerifiedRequest = {
     presentationFile: string,
     challenge: string
