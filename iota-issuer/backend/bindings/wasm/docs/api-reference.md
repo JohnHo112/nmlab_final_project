@@ -149,7 +149,7 @@ working with storage backed DID documents.</p>
 ## Members
 
 <dl>
-<dt><a href="#MethodRelationship">MethodRelationship</a></dt>
+<dt><a href="#StateMetadataEncoding">StateMetadataEncoding</a></dt>
 <dd></dd>
 <dt><a href="#StatusCheck">StatusCheck</a></dt>
 <dd><p>Controls validation behaviour when checking whether or not a credential has been revoked by its
@@ -168,15 +168,6 @@ working with storage backed DID documents.</p>
 <dt><a href="#SkipAll">SkipAll</a></dt>
 <dd><p>Skip all status checks.</p>
 </dd>
-<dt><a href="#FailFast">FailFast</a></dt>
-<dd><p>Declares when validation should return if an error occurs.</p>
-</dd>
-<dt><a href="#AllErrors">AllErrors</a></dt>
-<dd><p>Return all errors that occur during validation.</p>
-</dd>
-<dt><a href="#FirstError">FirstError</a></dt>
-<dd><p>Return after the first error occurs.</p>
-</dd>
 <dt><a href="#SubjectHolderRelationship">SubjectHolderRelationship</a></dt>
 <dd><p>Declares how credential subjects must relate to the presentation holder.</p>
 <p>See also the <a href="https://www.w3.org/TR/vc-data-model/#subject-holder-relationships">Subject-Holder Relationship</a> section of the specification.</p>
@@ -191,7 +182,16 @@ This variant is the default.</p>
 <dt><a href="#Any">Any</a></dt>
 <dd><p>The holder is not required to have any kind of relationship to any credential subject.</p>
 </dd>
-<dt><a href="#StateMetadataEncoding">StateMetadataEncoding</a></dt>
+<dt><a href="#FailFast">FailFast</a></dt>
+<dd><p>Declares when validation should return if an error occurs.</p>
+</dd>
+<dt><a href="#AllErrors">AllErrors</a></dt>
+<dd><p>Return all errors that occur during validation.</p>
+</dd>
+<dt><a href="#FirstError">FirstError</a></dt>
+<dd><p>Return after the first error occurs.</p>
+</dd>
+<dt><a href="#MethodRelationship">MethodRelationship</a></dt>
 <dd></dd>
 </dl>
 
@@ -5041,9 +5041,9 @@ Deserializes an instance from a JSON object.
 | --- | --- |
 | json | <code>any</code> | 
 
-<a name="MethodRelationship"></a>
+<a name="StateMetadataEncoding"></a>
 
-## MethodRelationship
+## StateMetadataEncoding
 **Kind**: global variable  
 <a name="StatusCheck"></a>
 
@@ -5076,24 +5076,6 @@ Validate the status if supported, skip any unsupported
 Skip all status checks.
 
 **Kind**: global variable  
-<a name="FailFast"></a>
-
-## FailFast
-Declares when validation should return if an error occurs.
-
-**Kind**: global variable  
-<a name="AllErrors"></a>
-
-## AllErrors
-Return all errors that occur during validation.
-
-**Kind**: global variable  
-<a name="FirstError"></a>
-
-## FirstError
-Return after the first error occurs.
-
-**Kind**: global variable  
 <a name="SubjectHolderRelationship"></a>
 
 ## SubjectHolderRelationship
@@ -5121,9 +5103,27 @@ The holder must match the subject only for credentials where the [`nonTransferab
 The holder is not required to have any kind of relationship to any credential subject.
 
 **Kind**: global variable  
-<a name="StateMetadataEncoding"></a>
+<a name="FailFast"></a>
 
-## StateMetadataEncoding
+## FailFast
+Declares when validation should return if an error occurs.
+
+**Kind**: global variable  
+<a name="AllErrors"></a>
+
+## AllErrors
+Return all errors that occur during validation.
+
+**Kind**: global variable  
+<a name="FirstError"></a>
+
+## FirstError
+Return after the first error occurs.
+
+**Kind**: global variable  
+<a name="MethodRelationship"></a>
+
+## MethodRelationship
 **Kind**: global variable  
 <a name="encodeB64"></a>
 

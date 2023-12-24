@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install-issuer-frontend": "cd frontend && npm install",
+    "install-issuer-frontend": "cd frontend && npm install && cd ..",
     "install-issuer-backend": "cd backend/bindings/wasm/examples && npm install && npm run build",
     "issuer-frontend": "cd frontend && npm run start",
     "issuer-backend": "cd backend/bindings/wasm && npm run start"

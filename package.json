@@ -1,16 +1,12 @@
 {
-    "name": "iota-did",
-    "version": "1.0.0",
-    "license": "MIT",
-    "scripts": {
-        "install-holder": "cd iota-holder && npm run install-packages",
-        "holder": "cd iota-holder && bash holder.sh",
-        "kill-holder": "cd iota-holder && bash kill_holder.sh",
-        "install-issuer": "cd iota-issuer && npm run install-packages",
-        "issuer": "cd iota-issuer && bash issuer.sh",
-        "kill-issuer": "cd iota-issuer && bash kill_issuer.sh",
-        "install-verifier": "cd iota-verifier && pnpm run install-packages",
-        "verifier": "cd iota-verifier && bash verifier.sh",
-        "kill-verifier": "cd iota-verifier && bash kill_verifier.sh"
-    }
+  "name": "nmlab_final_project",
+  "version": "1.0.0",
+  "description": "```\r cd iota-holder\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-all-packages": "cd iota-holder && npm run install-holder-frontend && npm run install-holder-backend && cd .. && cd iota-issuer && npm run install-issuer-frontend && npm run install-issuer-backend && cd .. && cd iota-verifier && npm run install-verifier-frontend && npm run install-verifier-backend && cd .."
+  },
+  "author": "",
+  "license": "ISC"
 }
