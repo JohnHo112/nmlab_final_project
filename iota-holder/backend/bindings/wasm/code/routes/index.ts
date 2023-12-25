@@ -1,18 +1,11 @@
-// import createDIDRoute from "./createDID";
-// import checkVPRoute from "./checkVP";
-// import loadDIDRoute from "./resolveDID";
-// import revokeVCRoute from "./Revo";
-// import VCRoute from "./VC";
-// import DownloadFileRoute from "./DownloadFile";
 import uploadFileRoute from "./uploadFile";
 import downloadVPRoute from "./downloadVP";
-// import checkUsrNameRoute from "./checkUsrName";
 import removeFileRoute from "./removeFile";
 import { createDid } from "../iota_function/create_did";
 import { createVP } from "../iota_function/create_vp";
 
-import { type Address, AliasOutput, Client, MnemonicSecretManager, SecretManager, Utils, SecretManagerType, IRent } from "@iota/sdk-wasm/node";
-import { API_ENDPOINT, ensureAddressHasFunds} from "../util";
+import { Client } from "@iota/sdk-wasm/node";
+import { API_ENDPOINT} from "../util";
 
 const wrap =
   (fn: any) =>
@@ -39,30 +32,19 @@ function main(app: any) {
     const holderDid = holderDocument.id().toString();
     res.send(holderDid);
   });
-  // app.get("/api/checkVP", wrap(checkVPRoute));
-  // app.get("/api/loadDID", wrap(loadDIDRoute));
-  // app.post("/api/revokeVC", wrap(revokeVCRoute));
-  // app.get("/api/VC", wrap(VCRoute));
   app.get("/api/VP", async (req: any, res: any) => {
-    // const holderDid = req.body.holderDID;
-    // const credentialFile = req.body.credentialFile;
-    // const holderFragment = req.body.fragment;
-    // const challenge = req.body.challenge;
     const data = req.query;
     const holderDid = data.holderDID;
     const credentialFile = data.credentialFile;
     const holderFragment = data.fragment;
     const challenge = data.challenge;
-    // console.log("VP req: \n" + holderDid + "\n" + credentialFile + "\n" +holderFragment + "\n" +challenge);
 
     const message = await createVP(client, holderStorage, credentialFile, holderDocument, holderFragment, challenge);
     console.log(message);
     res.send(message);
   });
-  // app.get("/api/downloadSH", wrap(DownloadFileRoute));
   app.post("/api/uploadFile", wrap(uploadFileRoute));
   app.get("/api/downloadVP", wrap(downloadVPRoute));
-  // app.post("/api/checkUsrName", wrap(checkUsrNameRoute));
   app.post("/api/removeFile", wrap(removeFileRoute));
 }
 

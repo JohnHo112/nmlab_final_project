@@ -2,25 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {
-    CoreDID,
-    Credential,
     Duration,
-    EdDSAJwsVerifier,
-    FailFast,
     IotaIdentityClient,
-    JwkMemStore,
     JwsSignatureOptions,
-    JwsVerificationOptions,
-    JwtCredentialValidationOptions,
-    JwtCredentialValidator,
     JwtPresentationOptions,
-    JwtPresentationValidationOptions,
-    JwtPresentationValidator,
-    KeyIdMemStore,
     Presentation,
     Resolver,
     Storage,
-    SubjectHolderRelationship,
     Timestamp,
     IotaDocument,
     Jwt,
@@ -43,9 +31,7 @@ export async function createVP(
     challenge:string,
     ) {
 
-    // ===========================================================================
     // Holder creates a verifiable presentation from the issued credential for the verifier to validate.
-    // ===========================================================================
     const didClient = new IotaIdentityClient(client);
 
     // Create a Verifiable Presentation from the Credential
@@ -57,7 +43,7 @@ export async function createVP(
     
     const resolver = new Resolver({
             client: didClient,
-        });
+    });
 
     const unsignedVp = new Presentation({
             holder: holderDocument.id(),
@@ -75,7 +61,7 @@ export async function createVP(
         new JwtPresentationOptions({ expirationDate: expires }),
     );
 
-// // validate vp
+// // verify vp (for testing)
 
 //     const jwtPresentationValidationOptions = new JwtPresentationValidationOptions(
 //         {
@@ -137,6 +123,7 @@ export async function createVP(
 
 //     // Since no errors were thrown we know that the validation was successful.
 //     console.log(`VP successfully validated`);
+
 
     // return the validation presentation (Jwt)
     const fileNamePresentation = holderFragment + '-presentation.json'

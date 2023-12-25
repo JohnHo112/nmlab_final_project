@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {
-    IotaDID,
     IotaDocument,
     IotaIdentityClient,
     JwkMemStore,
@@ -10,11 +9,9 @@ import {
     KeyIdMemStore,
     MethodScope,
     Storage,
-    RevocationBitmap,
-    Service,
 } from "@iota/identity-wasm/node";
-import { type Address, AliasOutput, Client, MnemonicSecretManager, SecretManager, Utils, SecretManagerType, IRent } from "@iota/sdk-wasm/node";
-import { API_ENDPOINT, ensureAddressHasFunds} from "../util";
+import { type Address, AliasOutput, Client, MnemonicSecretManager, SecretManager, Utils } from "@iota/sdk-wasm/node";
+import { ensureAddressHasFunds} from "../util";
 
 /** Demonstrate how to create a DID Document and publish it in a new Alias Output. */
 export async function createDid(verificationMethodFragment:string, client:Client): Promise<{

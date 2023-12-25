@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import instance from "../api";
 import Card from 'react-bootstrap/Card';
-import { JsonView,  defaultStyles } from 'react-json-view-lite';
+import { JsonView } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
-
 
 export default function CreateDID(){
     const [errorMessage, setErrorMessage] = useState("");
@@ -15,6 +14,7 @@ export default function CreateDID(){
 
     const handleLogin = async (e) => {
         setLoading(true);
+        setErrorMessage("");
         setIotaDID("");
         if(verificationMethod===""){
             setErrorMessage("Please enter verification method!");
@@ -31,7 +31,7 @@ export default function CreateDID(){
                     console.log("DID created successfully!");
                 })
                 .catch((err) => {
-                    setErrorMessage("Something went wrong with creating DID. Please try again later.");
+                    setErrorMessage("Something went wrong while creating DID. Please try again later.");
                     console.log(err);
                 });
         }
@@ -60,7 +60,7 @@ export default function CreateDID(){
                 </Form>
                 </Container>
             </Card>
-            <div id="errorMessage">
+            <div id="errorMessage" color="red">
                 <p>{errorMessage}</p>
             </div>
             <div id="DID-create">
@@ -90,8 +90,9 @@ export default function CreateDID(){
                         </p>
                     </div>
                     }
-                    </Card>
+                </Card>
             </div>
+            
         </div>
 
     )
