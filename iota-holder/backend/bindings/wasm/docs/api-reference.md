@@ -149,10 +149,23 @@ working with storage backed DID documents.</p>
 ## Members
 
 <dl>
-<dt><a href="#StateMetadataEncoding">StateMetadataEncoding</a></dt>
-<dd></dd>
-<dt><a href="#MethodRelationship">MethodRelationship</a></dt>
-<dd></dd>
+<dt><a href="#StatusCheck">StatusCheck</a></dt>
+<dd><p>Controls validation behaviour when checking whether or not a credential has been revoked by its
+<a href="https://www.w3.org/TR/vc-data-model/#status"><code>credentialStatus</code></a>.</p>
+</dd>
+<dt><a href="#Strict">Strict</a></dt>
+<dd><p>Validate the status if supported, reject any unsupported
+<a href="https://www.w3.org/TR/vc-data-model/#status"><code>credentialStatus</code></a> types.</p>
+<p>Only <code>RevocationBitmap2022</code> is currently supported.</p>
+<p>This is the default.</p>
+</dd>
+<dt><a href="#SkipUnsupported">SkipUnsupported</a></dt>
+<dd><p>Validate the status if supported, skip any unsupported
+<a href="https://www.w3.org/TR/vc-data-model/#status"><code>credentialStatus</code></a> types.</p>
+</dd>
+<dt><a href="#SkipAll">SkipAll</a></dt>
+<dd><p>Skip all status checks.</p>
+</dd>
 <dt><a href="#SubjectHolderRelationship">SubjectHolderRelationship</a></dt>
 <dd><p>Declares how credential subjects must relate to the presentation holder.</p>
 <p>See also the <a href="https://www.w3.org/TR/vc-data-model/#subject-holder-relationships">Subject-Holder Relationship</a> section of the specification.</p>
@@ -176,23 +189,10 @@ This variant is the default.</p>
 <dt><a href="#FirstError">FirstError</a></dt>
 <dd><p>Return after the first error occurs.</p>
 </dd>
-<dt><a href="#StatusCheck">StatusCheck</a></dt>
-<dd><p>Controls validation behaviour when checking whether or not a credential has been revoked by its
-<a href="https://www.w3.org/TR/vc-data-model/#status"><code>credentialStatus</code></a>.</p>
-</dd>
-<dt><a href="#Strict">Strict</a></dt>
-<dd><p>Validate the status if supported, reject any unsupported
-<a href="https://www.w3.org/TR/vc-data-model/#status"><code>credentialStatus</code></a> types.</p>
-<p>Only <code>RevocationBitmap2022</code> is currently supported.</p>
-<p>This is the default.</p>
-</dd>
-<dt><a href="#SkipUnsupported">SkipUnsupported</a></dt>
-<dd><p>Validate the status if supported, skip any unsupported
-<a href="https://www.w3.org/TR/vc-data-model/#status"><code>credentialStatus</code></a> types.</p>
-</dd>
-<dt><a href="#SkipAll">SkipAll</a></dt>
-<dd><p>Skip all status checks.</p>
-</dd>
+<dt><a href="#StateMetadataEncoding">StateMetadataEncoding</a></dt>
+<dd></dd>
+<dt><a href="#MethodRelationship">MethodRelationship</a></dt>
+<dd></dd>
 </dl>
 
 ## Functions
@@ -5041,13 +5041,36 @@ Deserializes an instance from a JSON object.
 | --- | --- |
 | json | <code>any</code> | 
 
-<a name="StateMetadataEncoding"></a>
+<a name="StatusCheck"></a>
 
-## StateMetadataEncoding
+## StatusCheck
+Controls validation behaviour when checking whether or not a credential has been revoked by its
+[`credentialStatus`](https://www.w3.org/TR/vc-data-model/#status).
+
 **Kind**: global variable  
-<a name="MethodRelationship"></a>
+<a name="Strict"></a>
 
-## MethodRelationship
+## Strict
+Validate the status if supported, reject any unsupported
+[`credentialStatus`](https://www.w3.org/TR/vc-data-model/#status) types.
+
+Only `RevocationBitmap2022` is currently supported.
+
+This is the default.
+
+**Kind**: global variable  
+<a name="SkipUnsupported"></a>
+
+## SkipUnsupported
+Validate the status if supported, skip any unsupported
+[`credentialStatus`](https://www.w3.org/TR/vc-data-model/#status) types.
+
+**Kind**: global variable  
+<a name="SkipAll"></a>
+
+## SkipAll
+Skip all status checks.
+
 **Kind**: global variable  
 <a name="SubjectHolderRelationship"></a>
 
@@ -5094,36 +5117,13 @@ Return all errors that occur during validation.
 Return after the first error occurs.
 
 **Kind**: global variable  
-<a name="StatusCheck"></a>
+<a name="StateMetadataEncoding"></a>
 
-## StatusCheck
-Controls validation behaviour when checking whether or not a credential has been revoked by its
-[`credentialStatus`](https://www.w3.org/TR/vc-data-model/#status).
-
+## StateMetadataEncoding
 **Kind**: global variable  
-<a name="Strict"></a>
+<a name="MethodRelationship"></a>
 
-## Strict
-Validate the status if supported, reject any unsupported
-[`credentialStatus`](https://www.w3.org/TR/vc-data-model/#status) types.
-
-Only `RevocationBitmap2022` is currently supported.
-
-This is the default.
-
-**Kind**: global variable  
-<a name="SkipUnsupported"></a>
-
-## SkipUnsupported
-Validate the status if supported, skip any unsupported
-[`credentialStatus`](https://www.w3.org/TR/vc-data-model/#status) types.
-
-**Kind**: global variable  
-<a name="SkipAll"></a>
-
-## SkipAll
-Skip all status checks.
-
+## MethodRelationship
 **Kind**: global variable  
 <a name="encodeB64"></a>
 

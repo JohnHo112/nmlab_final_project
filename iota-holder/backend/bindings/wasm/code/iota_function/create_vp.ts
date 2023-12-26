@@ -42,12 +42,12 @@ export async function createVP(
     const credentialJwt = await new Jwt(verifiableCredential)
     
     const resolver = new Resolver({
-            client: didClient,
+        client: didClient,
     });
 
     const unsignedVp = new Presentation({
-            holder: holderDocument.id(),
-            verifiableCredential: [credentialJwt],
+        holder: holderDocument.id(),
+        verifiableCredential: [credentialJwt],
     });
 
     const nonce = challenge
@@ -125,7 +125,6 @@ export async function createVP(
 //     console.log(`VP successfully validated`);
 
 
-    // return the validation presentation (Jwt)
     const fileNamePresentation = holderFragment + '-presentation.json'
     const presentationFilePath = path.join('presentations', fileNamePresentation)
     writeFileSync(presentationFilePath, JSON.stringify(presentationJwt, null, 4))
